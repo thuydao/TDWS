@@ -30,7 +30,7 @@
 {
     [super viewWillAppear:animated];
 
-    [TDService callAPI:HTTP_METHOD_GET path:@"http://api.b2btrongtin.com.vn/app" parameters:@{@"appversion": @"v3"} completed:^(id res, NSError *error) {
+    [TDService callAPI:HTTP_METHOD_GET path:@"p" parameters:@{@"appversion": @"v3"} completed:^(id res, NSError *error) {
         NSLog(@"%@",res);
     }];
 }
