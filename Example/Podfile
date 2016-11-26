@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'TDWS_Example' do
+  pod 'TDWS', :path => '../'
+
+  target 'TDWS_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
