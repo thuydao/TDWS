@@ -1,5 +1,21 @@
 PODS:
-  - TDWS (0.1.0)
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - TDWS (0.1.0):
+    - AFNetworking
 
 DEPENDENCIES:
   - TDWS (from `../`)
@@ -9,7 +25,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  TDWS: fa5f384b849f46f59ee9f9af30c331896b24f10c
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  TDWS: a49fafb5cb6b6617f0d6e20348041ec5253dba16
 
 PODFILE CHECKSUM: 5696f77a7b0c6440c95fcb47138322157ed73d91
 

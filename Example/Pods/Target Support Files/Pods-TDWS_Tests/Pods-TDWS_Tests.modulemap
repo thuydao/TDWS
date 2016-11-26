@@ -1,0 +1,6 @@
+framework module Pods_TDWS_Tests {
+  umbrella header "Pods-TDWS_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -6,13 +6,7 @@
 //  Copyright © 2016 Moboco. All rights reserved.
 //
 
-#define CONFIG_PATH            @"/api/v1"//@"/xrest/v1/xretail/xproduct"
-#define CONFIG_NEW_PATH        @"/xrest/v1/xretail"
-#define CLIENT_ID              @"ios_app"
-#define CLIENT_SECRET          @"demo"
-
 #import <Foundation/Foundation.h>
-#import <TDCore/TDCore.h>
 
 typedef NS_ENUM (NSUInteger, HTTP_METHOD) {
     HTTP_METHOD_GET,
@@ -23,19 +17,20 @@ typedef NS_ENUM (NSUInteger, HTTP_METHOD) {
 
 typedef void(^serviceCompletion)(id response, NSError *error);
 
-@interface TDService : TDBaseObject
+@interface TDService : NSObject
 
 @property (strong, nonatomic) NSString *td_domain;
+
++ (id)sharedManager;
 
 + (NSURLSessionDataTask *)callAPI:(HTTP_METHOD)method
                              path:(NSString *)path
                        parameters:(NSDictionary *)params
-                    completed:(void (^)(id res, NSError *error))completed;
+                        completed:(void (^)(id res, NSError *error))completed;
 
 
-// NSString * baseUrlSite();
 
-NSString * fullPath(NSString *shortPath);
+NSString * fullPath(NSString *baseUrl, NSString *shortPath);
 
 @end
 

@@ -1,0 +1,6 @@
+framework module Pods_TDWS_Example {
+  umbrella header "Pods-TDWS_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

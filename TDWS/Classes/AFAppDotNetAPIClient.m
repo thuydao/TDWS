@@ -41,9 +41,8 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     _sharedClient = [[AFAppDotNetAPIClient alloc] initWithBaseURL:url];
     _sharedClient.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     _sharedClient.securityPolicy.allowInvalidCertificates = YES;
-
-//          _sharedClient.operationQueue.maxConcurrentOperationCount = 1;
-    //  sessionManager.requestSerializer.timeoutInterval = timeout;
+//    _sharedClient.operationQueue.maxConcurrentOperationCount = 1;
+//    sessionManager.requestSerializer.timeoutInterval = timeout;
 
     _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
     _sharedClient.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", nil];

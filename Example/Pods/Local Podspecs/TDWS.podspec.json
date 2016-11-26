@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "summary": "A short description of TDWS.",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/TDWS",
+  "homepage": "https://github.com/thuydao/TDWS",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,11 +12,16 @@
     "Anonymous": "daoduythuy@gmail.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/TDWS.git",
+    "git": "https://github.com/thuydao/TDWS.git",
     "tag": "0.1.0"
   },
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "TDWS/Classes/**/*"
+  "source_files": "TDWS/Classes/**/*",
+  "dependencies": {
+    "AFNetworking": [
+
+    ]
+  }
 }

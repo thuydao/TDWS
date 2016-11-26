@@ -7,7 +7,6 @@
 //
 
 #import "NSError+XPMessage.h"
-#import <TDCore/TDCore.h>
 
 @implementation NSError (XPMessage)
 
@@ -15,7 +14,6 @@
 {
     NSDictionary *dictData = self.userInfo;
     
-    // maybe: @"com.alamofire.serialization.response.error.data"
     NSString *keyData = @"";
     for ( NSString *key in dictData.allKeys )
     {
@@ -26,7 +24,7 @@
         }
     }
     
-    NSData *data = [dictData td_objectForKey:keyData];
+    NSData *data = [dictData objectForKey:keyData];
     if ( !data || ![data isKindOfClass:[NSData class]] )
     {
         return [NSDictionary new];
@@ -45,7 +43,7 @@
 {
     NSDictionary *dictData = [self xp_responseData];
     
-    NSString *type = [dictData td_stringForKey:@"error"];
+    NSString *type = [dictData objectForKey:@"error"];
     
     return type;
 }
@@ -54,9 +52,9 @@
 {
     NSDictionary *dictData = [self xp_responseData];
     
-    NSString *message = [dictData td_stringForKey:@"error_description"];
+    NSString *message = [dictData objectForKey:@"error_description"];
     
-    if ( [message td_isEmpty] )
+    if ( [message initWithString:@""] )
     {
         message = self.localizedDescription;
     }
