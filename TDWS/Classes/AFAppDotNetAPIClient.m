@@ -58,4 +58,9 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     
 }
 
++ (void)authorizationUsr:(NSString *)usr pwd:(NSString *)pwd
+{
+    [[AFAppDotNetAPIClient sharedClient].requestSerializer setAuthorizationHeaderFieldWithUsername:usr password:pwd];
+}
+
 @end

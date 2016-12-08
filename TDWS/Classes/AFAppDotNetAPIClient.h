@@ -29,7 +29,10 @@
 
 /* Reset AFAppDotNetAPIClient with new base URL string (by pass session). */
 + (void)setupBaseUrl:(NSURL *)url;
+
 + (void)useJSONRequestSerializer;
 + (void)useHTTPRequestSerializer;
+
++ (void)authorizationUsr:(NSString *)usr pwd:(NSString *)pwd;
 
 @end
