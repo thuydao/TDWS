@@ -16,6 +16,16 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
 @implementation TDService {
 }
 
+#pragma mark - Configure
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        [self td_initialize];
+    }
+    return self;
+}
+
 + (id)sharedManager {
     static TDService *sharedMyManager = nil;
     @synchronized(self) {
@@ -24,6 +34,13 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
     }
     return sharedMyManager;
 }
+
+- (void)td_initialize
+{
+
+}
+
+#pragma mark - API
 
 + (NSURLSessionDataTask *)callAPI:(HTTP_METHOD)method
                              path:(NSString *)path

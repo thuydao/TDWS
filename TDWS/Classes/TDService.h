@@ -20,6 +20,7 @@ typedef void(^serviceCompletion)(id response, NSError *error);
 @interface TDService : NSObject
 
 @property (strong, nonatomic) NSString *td_domain;
+- (void)td_initialize;
 
 + (id)sharedManager;
 
