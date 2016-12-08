@@ -45,8 +45,9 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
 //    sessionManager.requestSerializer.timeoutInterval = timeout;
 
     _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
-    _sharedClient.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", nil];
+    _sharedClient.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
 }
+
 
 + (void)useJSONRequestSerializer  {
     [AFAppDotNetAPIClient sharedClient].requestSerializer = [AFJSONRequestSerializer serializer];
