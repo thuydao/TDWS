@@ -10,6 +10,6 @@
 
 @interface NSDictionary (TDJSON)
 
-+ (NSString *)toJSON;
+- (NSString *)toJSON;
 
 @end

@@ -11,7 +11,7 @@
 
 @implementation NSDictionary (TDJSON)
 
-+ (NSString *)toJSON
+- (NSString *)toJSON
 {
     return AFQueryStringFromParameters(self);
 }
