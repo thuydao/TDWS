@@ -52,7 +52,7 @@
 {
     NSDictionary *dictData = [self xp_responseData];
     
-    NSString *message = [dictData objectForKey:@"error_description"];
+    NSString *message = [dictData objectForKey:@"message"];
     
     if ( [message initWithString:@""] )
     {
