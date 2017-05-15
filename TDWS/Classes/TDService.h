@@ -8,11 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+@class AFAppDotNetAPIClient;
+
 typedef NS_ENUM (NSUInteger, HTTP_METHOD) {
     HTTP_METHOD_GET,
     HTTP_METHOD_POST,
     HTTP_METHOD_PUT,
     HTTP_METHOD_DELETE
+};
+
+typedef NS_ENUM (NSUInteger, REQUEST_SERIALIZER) {
+    REQUEST_SERIALIZER_JSON,
+    REQUEST_SERIALIZER_HTTP
 };
 
 typedef void(^serviceCompletion)(id response, NSError *error);
@@ -29,11 +36,17 @@ typedef void(^serviceCompletion)(id response, NSError *error);
                        parameters:(NSDictionary *)params
                         completed:(void (^)(id res, NSError *error))completed;
 
++ (NSURLSessionDataTask *)callAPI:(AFAppDotNetAPIClient *)client
+                           method:(HTTP_METHOD)method
+                             path:(NSString *)path
+                       parameters:(NSDictionary *)params
+                        completed:(void (^)(id res, NSError *error))completed;
+
 
 
 NSString * fullPath(NSString *baseUrl, NSString *shortPath);
 
 @end
 
-#import "AFAppDotNetAPIClient.h"
+//#import "AFAppDotNetAPIClient.h"
 

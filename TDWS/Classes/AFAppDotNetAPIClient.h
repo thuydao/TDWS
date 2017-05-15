@@ -35,4 +35,11 @@
 
 + (void)authorizationUsr:(NSString *)usr pwd:(NSString *)pwd;
 
+//- (instancetype)initWithBaseUrl:(NSURL *)url;
+- (instancetype)initJSONRequestSerializerWithBaseUrl:(NSURL *)url;
+- (instancetype)initHTTPRequestSerializerWithBaseUrl:(NSURL *)url;
+- (void)useJSONRequestSerializer;
+- (void)useHTTPRequestSerializer;
+- (void)authorizationUsr:(NSString *)usr pwd:(NSString *)pwd;
+
 @end
