@@ -66,40 +66,36 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
 }
 
 
-- (instancetype)initJSONRequestSerializerWithBaseUrl:(NSURL *)url
++ (AFAppDotNetAPIClient *)newJSONRequestSerializerWithBaseUrl:(NSURL *)url
 {
-    if (self = [super init]) {
-        self = [[AFAppDotNetAPIClient alloc] initWithBaseURL:url];
-        
-        AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-        securityPolicy.allowInvalidCertificates = YES;
-        securityPolicy.validatesDomainName = NO;
-        self.securityPolicy = securityPolicy;
-        
-        self.requestSerializer = [AFJSONRequestSerializer serializer];
-        self.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
-        [self useJSONRequestSerializer];
-    }
+    AFAppDotNetAPIClient *client = [[AFAppDotNetAPIClient alloc] initWithBaseURL:url];
     
-    return self;
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    securityPolicy.allowInvalidCertificates = YES;
+    securityPolicy.validatesDomainName = NO;
+    client.securityPolicy = securityPolicy;
+    
+    client.requestSerializer = [AFJSONRequestSerializer serializer];
+    client.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
+    [client useJSONRequestSerializer];
+    
+    return client;
 }
 
-- (instancetype)initHTTPRequestSerializerWithBaseUrl:(NSURL *)url
++ (AFAppDotNetAPIClient *)newHTTPRequestSerializerWithBaseUrl:(NSURL *)url
 {
-    if (self = [super init]) {
-        self = [[AFAppDotNetAPIClient alloc] initWithBaseURL:url];
-        
-        AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-        securityPolicy.allowInvalidCertificates = YES;
-        securityPolicy.validatesDomainName = NO;
-        self.securityPolicy = securityPolicy;
-        
-        self.requestSerializer = [AFJSONRequestSerializer serializer];
-        self.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
-        [self useHTTPRequestSerializer];
-    }
+    AFAppDotNetAPIClient *client = [[AFAppDotNetAPIClient alloc] initWithBaseURL:url];
     
-    return self;
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    securityPolicy.allowInvalidCertificates = YES;
+    securityPolicy.validatesDomainName = NO;
+    client.securityPolicy = securityPolicy;
+    
+    client.requestSerializer = [AFJSONRequestSerializer serializer];
+    client.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
+    [self useHTTPRequestSerializer];
+    
+    return client;
 }
 
 - (void)useJSONRequestSerializer {
