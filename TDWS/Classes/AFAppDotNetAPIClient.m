@@ -76,8 +76,10 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     client.securityPolicy = securityPolicy;
     
     client.requestSerializer = [AFJSONRequestSerializer serializer];
-    client.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
-    [client useJSONRequestSerializer];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", @"text/plain", nil];
+    client.responseSerializer = responseSerializer;
     
     return client;
 }
@@ -91,9 +93,10 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     securityPolicy.validatesDomainName = NO;
     client.securityPolicy = securityPolicy;
     
-    client.requestSerializer = [AFJSONRequestSerializer serializer];
-    client.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
-    [self useHTTPRequestSerializer];
+    client.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    client.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    client.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", @"text/plain", nil];
     
     return client;
 }
