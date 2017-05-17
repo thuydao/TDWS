@@ -41,5 +41,6 @@
 - (void)useJSONRequestSerializer;
 - (void)useHTTPRequestSerializer;
 - (void)authorizationUsr:(NSString *)usr pwd:(NSString *)pwd;
+- (void)authorizationToken:(NSString *)token;
 
 @end

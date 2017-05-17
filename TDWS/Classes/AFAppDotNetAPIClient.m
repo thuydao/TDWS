@@ -114,4 +114,10 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     [self.requestSerializer setAuthorizationHeaderFieldWithUsername:usr password:pwd];
 }
 
+- (void)authorizationToken:(NSString *)token
+{
+    NSString *finalyToken = [[NSString alloc]initWithFormat:@"Bearer %@",token];
+    [self.requestSerializer setValue:finalyToken forHTTPHeaderField:@"Authorization"];
+}
+
 @end
