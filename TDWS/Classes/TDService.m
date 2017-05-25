@@ -10,6 +10,8 @@
 #import "AFAppDotNetAPIClient.h"
 #import "NSError+XPMessage.h"
 
+NSString * const TD_ERROR_RESPONSE_DATA = @"ERROR_RESPONSE_DATA";
+
 typedef void(^success_callback)(NSURLSessionDataTask * __unused task, id JSON);
 typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *error);
 
@@ -83,7 +85,7 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
               "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
 
         NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
-        [newInfo setValue:error.xp_responseData forKey:NSLocalizedDescriptionKey];
+        [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
 
         completed(nil, [NSError errorWithDomain:error.domain code:error.code userInfo:newInfo]);
     };
@@ -170,7 +172,7 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
               "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
         
         NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
-        [newInfo setValue:error.xp_responseData forKey:NSLocalizedDescriptionKey];
+        [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
         
         completed(nil, [NSError errorWithDomain:error.domain code:error.code userInfo:newInfo]);
     };

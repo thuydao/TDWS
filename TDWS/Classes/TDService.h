@@ -10,6 +10,8 @@
 
 @class AFAppDotNetAPIClient;
 
+extern NSString * const TD_ERROR_RESPONSE_DATA;
+
 typedef NS_ENUM (NSUInteger, HTTP_METHOD) {
     HTTP_METHOD_GET,
     HTTP_METHOD_POST,
