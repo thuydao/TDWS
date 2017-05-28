@@ -47,6 +47,7 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
 
     _sharedClient.requestSerializer = [AFJSONRequestSerializer serializer];
     _sharedClient.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", nil];
+    _sharedClient.currentRetry = 0;
 }
 
 
@@ -80,6 +81,7 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
     responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", @"text/plain", nil];
     client.responseSerializer = responseSerializer;
+    client.currentRetry = 0;
     
     return client;
 }
@@ -97,6 +99,7 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
     
     client.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
     client.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"text/xml", @"application/json", @"application/x-www-form-urlencoded", @"charset=UTF-8", @"text/plain", nil];
+    client.currentRetry = 0;
     
     return client;
 }
@@ -118,6 +121,12 @@ static AFAppDotNetAPIClient *_sharedClient = nil;
 {
     NSString *finalyToken = [[NSString alloc]initWithFormat:@"Bearer %@",token];
     [self.requestSerializer setValue:finalyToken forHTTPHeaderField:@"Authorization"];
+}
+
+- (void)refreshTokenWithCompleted:(void (^)(id res, NSError *error))completed
+{
+    self.currentRetry = self.maxRetry;
+    completed(nil, [NSError errorWithDomain:@"" code:401 userInfo:@{}]);
 }
 
 @end

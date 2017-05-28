@@ -25,6 +25,9 @@
 
 @interface AFAppDotNetAPIClient : AFHTTPSessionManager
 
+@property (nonatomic, assign) NSInteger currentRetry;
+@property (nonatomic, assign) NSInteger maxRetry;
+
 + (instancetype)sharedClient;
 
 /* Reset AFAppDotNetAPIClient with new base URL string (by pass session). */
@@ -42,5 +45,8 @@
 - (void)useHTTPRequestSerializer;
 - (void)authorizationUsr:(NSString *)usr pwd:(NSString *)pwd;
 - (void)authorizationToken:(NSString *)token;
+
+
+- (void)refreshTokenWithCompleted:(void (^)(id res, NSError *error))completed;
 
 @end

@@ -159,7 +159,35 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
     };
     
     // MARK: handle error here
+    __weak AFAppDotNetAPIClient *weakClient = (id)client;
+    __weak id weakMethod = (id)@(method);
+    __weak NSString *weakPath = (id)path;
+    __weak NSDictionary *weakParam = params;
+    __weak id weakComplete = completed;
+    
+    
     error_callback error_callback = ^(NSURLSessionDataTask *__unused task, NSError *error) {
+        
+        if (error.code == 401 && weakClient.currentRetry < weakClient.maxRetry)
+        {
+            weakClient.currentRetry = weakClient.currentRetry + 1;
+            
+            [weakClient refreshTokenWithCompleted:^(id res, NSError *error1) {
+                if (error1) {
+                    NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
+                    [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
+                    completed(nil, [NSError errorWithDomain:error.domain code:error.code userInfo:newInfo]);
+                    return;
+                }
+                else
+                {
+                    [TDService callAPI:weakClient method:[weakMethod integerValue] path:weakPath parameters:weakParam completed:weakComplete];
+                }
+            }];
+            
+            
+            return;
+        }
         
         dispatch_group_leave(client.completionGroup);
         
