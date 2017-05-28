@@ -39,7 +39,7 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
 
 - (void)td_initialize
 {
-
+    
 }
 
 #pragma mark - API
@@ -48,16 +48,16 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
                              path:(NSString *)path
                        parameters:(NSDictionary *)params
                         completed:(void (^)(id res, NSError *error))completed {
-
+    
     // Log
-
+    
     NSLog(@"%@", [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding]);
-
+    
     // MARK: handle success here
     success_callback successcallback = ^(NSURLSessionDataTask * __unused task, id JSON) {
-
+        
         dispatch_group_leave([AFAppDotNetAPIClient sharedClient].completionGroup);
-
+        
         NSError * err;
         NSData * jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
         NSString * json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -67,15 +67,15 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
               "Params: %@\n"
               "----------- RESPONSE SUCCESS -----------\n"
               "\n\n %@",path,(unsigned long)method, json, JSON);
-
+        
         completed(JSON, nil);
     };
-
+    
     // MARK: handle error here
     error_callback error_callback = ^(NSURLSessionDataTask *__unused task, NSError *error) {
-
+        
         dispatch_group_leave([AFAppDotNetAPIClient sharedClient].completionGroup);
-
+        
         NSLog(@"\n----------- CALL API -----------\n"
               "URL: %@\n"
               "METHOD: %lu\n"
@@ -83,20 +83,20 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
               "----------- RESPONSE ERROR -----------\n"
               "\n\n %@"
               "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
-
+        
         NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
         [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
-
+        
         completed(nil, [NSError errorWithDomain:error.domain code:error.code userInfo:newInfo]);
     };
-
+    
     if (![AFAppDotNetAPIClient sharedClient].completionGroup) {
-
+        
         [AFAppDotNetAPIClient sharedClient].completionGroup = dispatch_group_create();
     }
-
+    
     dispatch_group_enter([AFAppDotNetAPIClient sharedClient].completionGroup);
-
+    
     // MARK: Send request to server use AFNetworking
     NSURLSessionDataTask *task;
     switch (method) {
@@ -105,29 +105,29 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
             task = [[AFAppDotNetAPIClient sharedClient] GET:path parameters:params progress:nil success:successcallback failure:error_callback];
             break;
         }
-
+            
         case HTTP_METHOD_POST:
         {
             task = [[AFAppDotNetAPIClient sharedClient] POST:path parameters:params progress:nil success:successcallback failure:error_callback];
             break;
         }
-
+            
         case HTTP_METHOD_DELETE:
         {
             task = [[AFAppDotNetAPIClient sharedClient] DELETE:path parameters:params success:successcallback failure:error_callback];
             break;
         }
-
+            
         case HTTP_METHOD_PUT:
         {
             task = [[AFAppDotNetAPIClient sharedClient] PUT:path parameters:params success:successcallback failure:error_callback];
             break;
         }
-
+            
         default:
             break;
     }
-
+    
     return task;
 }
 
@@ -163,12 +163,14 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
     __weak id weakMethod = (id)@(method);
     __weak NSString *weakPath = (id)path;
     __weak NSDictionary *weakParam = params;
-    __weak id weakComplete = completed;
+    //    __weak id weakComplete = completed;
     
     
     error_callback error_callback = ^(NSURLSessionDataTask *__unused task, NSError *error) {
         
-        if (error.code == 401 && weakClient.currentRetry < weakClient.maxRetry)
+        NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+        NSInteger code = [response statusCode];
+        if (code == 401 && weakClient.currentRetry < weakClient.maxRetry)
         {
             weakClient.currentRetry = weakClient.currentRetry + 1;
             
@@ -181,7 +183,7 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
                 }
                 else
                 {
-                    [TDService callAPI:weakClient method:[weakMethod integerValue] path:weakPath parameters:weakParam completed:weakComplete];
+                    [TDService callAPI:weakClient method:[weakMethod integerValue] path:weakPath parameters:weakParam completed:completed];
                 }
             }];
             
@@ -212,8 +214,8 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
     }
     
     dispatch_group_enter(client.completionGroup);
-
-
+    
+    
     // MARK: Send request to server use AFNetworking
     NSURLSessionDataTask *task;
     switch (method) {
@@ -254,7 +256,7 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
 NSString * fullPath(NSString *baseUrl, NSString *shortPath)
 {
     NSString *fullPath = [baseUrl stringByAppendingString:shortPath];
-
+    
     return fullPath;
 }
 
