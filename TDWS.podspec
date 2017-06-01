@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TDWS'
-  s.version          = '2.5'
+  s.version          = '2.6'
   s.summary          = 'A short description of TDWS.'
 
 #https://github.com/thuydao/TDWS

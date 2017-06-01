@@ -28,6 +28,8 @@
 @property (nonatomic, assign) NSInteger currentRetry;
 @property (nonatomic, assign) NSInteger maxRetry;
 
+@property (nonatomic, assign) BOOL enableLog; //default NO;
+
 + (instancetype)sharedClient;
 
 /* Reset AFAppDotNetAPIClient with new base URL string (by pass session). */

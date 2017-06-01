@@ -50,8 +50,10 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
                         completed:(void (^)(id res, NSError *error))completed {
     
     // Log
-    
-    NSLog(@"%@", [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding]);
+    if ([AFAppDotNetAPIClient sharedClient].enableLog)
+    {
+        NSLog(@"%@", [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding]);
+    }
     
     // MARK: handle success here
     success_callback successcallback = ^(NSURLSessionDataTask * __unused task, id JSON) {
@@ -59,14 +61,17 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
         dispatch_group_leave([AFAppDotNetAPIClient sharedClient].completionGroup);
         
         NSError * err;
-        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
-        NSString * json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"\n----------- CALL API -----------\n"
-              "URL: %@\n"
-              "METHOD: %lu\n"
-              "Params: %@\n"
-              "----------- RESPONSE SUCCESS -----------\n"
-              "\n\n %@",path,(unsigned long)method, json, JSON);
+        if ([AFAppDotNetAPIClient sharedClient].enableLog)
+        {
+            NSData * jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
+            NSString * json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            NSLog(@"\n----------- CALL API -----------\n"
+                  "URL: %@\n"
+                  "METHOD: %lu\n"
+                  "Params: %@\n"
+                  "----------- RESPONSE SUCCESS -----------\n"
+                  "\n\n %@",path,(unsigned long)method, json, JSON);
+        }
         
         completed(JSON, nil);
     };
@@ -76,13 +81,16 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
         
         dispatch_group_leave([AFAppDotNetAPIClient sharedClient].completionGroup);
         
-        NSLog(@"\n----------- CALL API -----------\n"
-              "URL: %@\n"
-              "METHOD: %lu\n"
-              "Params: %@\n"
-              "----------- RESPONSE ERROR -----------\n"
-              "\n\n %@"
-              "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
+        if ([AFAppDotNetAPIClient sharedClient].enableLog)
+        {
+            NSLog(@"\n----------- CALL API -----------\n"
+                  "URL: %@\n"
+                  "METHOD: %lu\n"
+                  "Params: %@\n"
+                  "----------- RESPONSE ERROR -----------\n"
+                  "\n\n %@"
+                  "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
+        }
         
         NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
         [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
@@ -137,8 +145,10 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
                        parameters:(NSDictionary *)params
                         completed:(void (^)(id res, NSError *error))completed {
     // Log
-    
-    NSLog(@"%@", [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding]);
+    if ([AFAppDotNetAPIClient sharedClient].enableLog)
+    {
+        NSLog(@"%@", [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding]);
+    }
     
     // MARK: handle success here
     success_callback successcallback = ^(NSURLSessionDataTask * __unused task, id JSON) {
@@ -146,23 +156,26 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
         dispatch_group_leave(client.completionGroup);
         
         NSError * err;
-        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
-        NSString * json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"\n----------- CALL API -----------\n"
-              "URL: %@\n"
-              "METHOD: %lu\n"
-              "Params: %@\n"
-              "----------- RESPONSE SUCCESS -----------\n"
-              "\n\n %@",path,(unsigned long)method, json, JSON);
         
+        if ([AFAppDotNetAPIClient sharedClient].enableLog)
+        {
+            NSData * jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
+            NSString * json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            NSLog(@"\n----------- CALL API -----------\n"
+                  "URL: %@\n"
+                  "METHOD: %lu\n"
+                  "Params: %@\n"
+                  "----------- RESPONSE SUCCESS -----------\n"
+                  "\n\n %@",path,(unsigned long)method, json, JSON);
+        }
         completed(JSON, nil);
     };
     
     // MARK: handle error here
-    __weak AFAppDotNetAPIClient *weakClient = (id)client;
-    __weak id weakMethod = (id)@(method);
-    __weak NSString *weakPath = (id)path;
-    __weak NSDictionary *weakParam = params;
+    __block AFAppDotNetAPIClient *weakClient = (id)client;
+    __block id weakMethod = (id)@(method);
+    __block NSString *weakPath = (id)path;
+    __block NSDictionary *weakParam = params;
     //    __weak id weakComplete = completed;
     
     
@@ -192,15 +205,16 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
         }
         
         dispatch_group_leave(client.completionGroup);
-        
-        NSLog(@"\n----------- CALL API -----------\n"
-              "URL: %@\n"
-              "METHOD: %lu\n"
-              "Params: %@\n"
-              "----------- RESPONSE ERROR -----------\n"
-              "\n\n %@"
-              "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
-        
+        if ([AFAppDotNetAPIClient sharedClient].enableLog)
+        {
+            NSLog(@"\n----------- CALL API -----------\n"
+                  "URL: %@\n"
+                  "METHOD: %lu\n"
+                  "Params: %@\n"
+                  "----------- RESPONSE ERROR -----------\n"
+                  "\n\n %@"
+                  "\n\n %@",path,(unsigned long)method, params, error.xp_responseData, [error description]);
+        }
         NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
         [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
         
