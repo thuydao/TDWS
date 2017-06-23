@@ -11,6 +11,7 @@
 #import "NSError+XPMessage.h"
 
 NSString * const TD_ERROR_RESPONSE_DATA = @"ERROR_RESPONSE_DATA";
+NSString * const TD_HTTP_STATUS_CODE = @"TD_HTTP_STATUS_CODE";
 
 typedef void(^success_callback)(NSURLSessionDataTask * __unused task, id JSON);
 typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *error);
@@ -217,6 +218,7 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
         }
         NSMutableDictionary *newInfo = [error.userInfo mutableCopy];
         [newInfo setValue:error.xp_responseData forKey:TD_ERROR_RESPONSE_DATA];
+        [newInfo setValue:@(code) forKey:TD_HTTP_STATUS_CODE];
         
         completed(nil, [NSError errorWithDomain:error.domain code:error.code userInfo:newInfo]);
     };
