@@ -151,7 +151,8 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
     if (![[AFNetworkReachabilityManager sharedManager] isReachable])
     {
         NSMutableDictionary *newInfo = [NSMutableDictionary new];
-        [newInfo setValue:@"lost connection" forKey:TD_ERROR_RESPONSE_DATA];
+        [newInfo setValue:@{@"msg":@"lost connection"} forKey:TD_ERROR_RESPONSE_DATA];
+        [newInfo setValue:@(TD_LOST_CONNECTION) forKey:TD_HTTP_STATUS_CODE];
         completed(nil, [NSError errorWithDomain:@"lost connection" code:TD_LOST_CONNECTION userInfo:newInfo]);
         return nil;
     }
