@@ -12,6 +12,7 @@
 
 extern NSString * const TD_ERROR_RESPONSE_DATA;
 extern NSString *const TD_HTTP_STATUS_CODE;
+extern NSInteger const TD_LOST_CONNECTION;
 
 typedef NS_ENUM (NSUInteger, HTTP_METHOD) {
     HTTP_METHOD_GET,

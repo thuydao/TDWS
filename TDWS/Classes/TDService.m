@@ -13,6 +13,8 @@
 NSString * const TD_ERROR_RESPONSE_DATA = @"ERROR_RESPONSE_DATA";
 NSString * const TD_HTTP_STATUS_CODE = @"TD_HTTP_STATUS_CODE";
 
+NSInteger const TD_LOST_CONNECTION = 9990;
+
 typedef void(^success_callback)(NSURLSessionDataTask * __unused task, id JSON);
 typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *error);
 
@@ -145,6 +147,15 @@ typedef void(^error_callback)(NSURLSessionDataTask *__unused task, NSError *erro
                              path:(NSString *)path
                        parameters:(NSDictionary *)params
                         completed:(void (^)(id res, NSError *error))completed {
+    //check internet
+    if (![[AFNetworkReachabilityManager sharedManager] isReachable])
+    {
+        NSMutableDictionary *newInfo = [NSMutableDictionary new];
+        [newInfo setValue:@"lost connection" forKey:TD_ERROR_RESPONSE_DATA];
+        completed(nil, [NSError errorWithDomain:@"lost connection" code:TD_LOST_CONNECTION userInfo:newInfo]);
+        return nil;
+    }
+    
     // Log
     if ([AFAppDotNetAPIClient sharedClient].enableLog)
     {
